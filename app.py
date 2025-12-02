@@ -375,7 +375,7 @@ def create_single_chart_skew(all_venc_filters, data_store, spot_price):
 
 # --- Função principal do Streamlit ---
 
-@st.cache_data(show_spinner="Buscando e processando dados da OpLab e B3...", ttl=3600)
+@st.cache_data(show_spinner="Buscando e processando dados...", ttl=3600)
 def fetch_and_process_data(selected_tickers, data_formatada):
     """
     Função para buscar e processar os dados, cacheada pelo Streamlit
@@ -796,8 +796,7 @@ def get_oplab_tickers():
 def main():
     st.title("Gamma Exposure (GEX) e Volatilidade - Dashboard Multi Ticker")
     st.markdown("""
-        Esta aplicação calcula e exibe métricas de **Gamma Exposure (GEX)**, **Open Interest (OI)** e **Volatilidade Implícita** para ativos do mercado brasileiro de opções (derivado do script `Gex_calculator_21.0.py`).
-        Os dados são obtidos da **OpLab** (Opções, Gamma, Volatilidade) e da **B3** (Open Interest).
+        Esta aplicação calcula e exibe métricas de **Gamma Exposure (GEX)**, **Open Interest (OI)** e **Volatilidade Implícita** para ativos do mercado brasileiro de opções.
     """)
 
     # --- Configuração de Entrada (Inputs) ---
@@ -899,27 +898,44 @@ def main():
             "GEX 5": "GEX 5 (Exp. Mv.)"
         }
         
-        # Layout de 3 colunas para as métricas
-        cols = st.columns(3)
-        i = 0
-        metrics_to_copy = []
-        for key, label in metric_labels.items():
-            value = summary_metrics[key]
-            formatted_value = formatar_numero(value, 2) if isinstance(value, (float, int)) and value is not None else str(value) if value is not None else "N/A"
-            
-            # Adiciona ao texto de cópia, normalizando 'N/A' para 0.00 ou mantendo o valor formatado
-            metrics_to_copy.append(f"{label}: {formatted_value.replace('.', '').replace(',', '.') if formatted_value != 'N/A' else 'N/A'}")
-            
-            cols[i % 3].metric(label=label, value=formatted_value)
-            i += 1
+# Layout de 3 colunas para as métricas
+cols = st.columns(3)
+i = 0
+copy_data_parts = [] # Lista para armazenar Label, Valor
 
-        # Botão Copiar Métricas
-        copy_text = f"{current_ticker} - {data_formatada.strftime('%d/%m/%Y')} | {data['spot_price']} | " + " | ".join(metrics_to_copy)
-        st.code(copy_text, language='text')
-        st.button("Copiar Métricas para a Área de Transferência", 
-                  on_click=lambda: st.success("Texto copiado! (Esta função depende do navegador, use o botão nativo do Streamlit ao lado do bloco de código se não funcionar.)"))
+for key, label in metric_labels.items():
+    value = summary_metrics[key]
+    
+    # 1. Valor para a métrica exibida no Dashboard (padrão BR: vírgula decimal)
+    formatted_value_display = formatar_numero(value, 2) if isinstance(value, (float, int)) and value is not None else str(value) if value is not None else "N/A"
+    
+    # 2. Valor para a string de CÓPIA (padrão US: ponto decimal)
+    if key == "Condição Gamma":
+        # Condição Gamma é texto, não precisa de formatação numérica
+        formatted_value_copy = str(value) if value is not None else "N/A"
+    else:
+        # Formata todos os valores numéricos (strikes e moves) para o padrão US (ponto decimal)
+        formatted_value_copy = formatar_para_copia(value, 2)
+    
+    # Adiciona ao array de cópia no formato "Label, Valor"
+    copy_data_parts.append(f"{label}, {formatted_value_copy}")
+    
+    # Renderiza a métrica no Streamlit com o valor formatado em BR
+    cols[i % 3].metric(label=label, value=formatted_value_display)
+    i += 1
 
-        st.markdown("---")
+# --- Construção da String de Cópia ---
+# Junta todas as partes no formato: Label, Valor, Label, Valor...
+copy_text = ", ".join(copy_data_parts)
+
+# Exibe o texto para cópia
+st.code(copy_text, language='text')
+
+# Botão Copiar Métricas
+st.button("Copiar Métricas para a Área de Transferência", 
+          on_click=lambda: st.success("Texto copiado! (Esta função depende do navegador, use o botão nativo do Streamlit ao lado do bloco de código se não funcionar.)"))
+
+st.markdown("---")
         
         # --- Seletor de Vencimento para os Gráficos ---
         st.subheader("Visualização por Vencimento")
