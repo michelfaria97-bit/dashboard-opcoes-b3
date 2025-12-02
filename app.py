@@ -36,6 +36,19 @@ def formatar_numero(valor, casas_decimais=2):
         # Fallback para formatação manual
         return f"{valor:,.{casas_decimais}f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
+# >>> ADICIONE ESTA FUNÇÃO AQUI <<<
+def formatar_para_copia(valor, casas_decimais=2):
+    """
+    Formata um número para o padrão americano (ponto decimal)
+    e retorna o valor como string, sem separador de milhar.
+    """
+    if isinstance(valor, (float, int)) and valor is not None:
+        # Usa f-string para formatar com ponto decimal e duas casas decimais
+        return f"{valor:.{casas_decimais}f}"
+    return "N/A"
+# >>> FIM DA ADIÇÃO <<<
+
+
 def get_vencimento_type(date):
     """
     Determina se o vencimento é Mensal (M) ou Semanal (W).
