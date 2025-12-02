@@ -897,18 +897,18 @@ def main():
         metric_labels = {
             "1D Exp Move Min": "Mov. Exp. Mínimo (1D)",
             "1D Exp Move Max": "Mov. Exp. Máximo (1D)",
-            "Call Wall": "Call Wall (Todos)",
-            "Put Wall": "Put Wall (Todos)",
-            "Call Wall 0DTE": "Call Wall (0DTE)",
-            "Put Wall 0DTE": "Put Wall (0DTE)",
-            "Key Level": "Key Level (Todos)",
-            "Key Level 0DTE": "Key Level (0DTE)",
+            "Call Wall": "Call Wall",
+            "Put Wall": "Put Wall",
+            "Call Wall 0DTE": "Call Wall 0DTE",
+            "Put Wall 0DTE": "Put Wall 0DTE",
+            "Key Level": "Key Level",
+            "Key Level 0DTE": "Key Level 0DTE",
             "Condição Gamma": "Condição Gamma",
-            "GEX 1": "GEX 1 (Exp. Mv.)",
-            "GEX 2": "GEX 2 (Exp. Mv.)",
-            "GEX 3": "GEX 3 (Exp. Mv.)",
-            "GEX 4": "GEX 4 (Exp. Mv.)",
-            "GEX 5": "GEX 5 (Exp. Mv.)"
+            "GEX 1": "GEX 1",
+            "GEX 2": "GEX 2",
+            "GEX 3": "GEX 3",
+            "GEX 4": "GEX 4",
+            "GEX 5": "GEX 5"
         }
         
 # Layout de 3 colunas para as métricas
