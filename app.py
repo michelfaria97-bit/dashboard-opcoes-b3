@@ -935,14 +935,14 @@ st.code(copy_text, language='text')
 st.button("Copiar Métricas para a Área de Transferência", 
           on_click=lambda: st.success("Texto copiado! (Esta função depende do navegador, use o botão nativo do Streamlit ao lado do bloco de código se não funcionar.)"))
 
-        st.markdown("---")
+st.markdown("---")
         
         # --- Seletor de Vencimento para os Gráficos ---
         st.subheader("Visualização por Vencimento")
         vencimento_selector = st.selectbox(
-            "Selecione o filtro de Vencimento para os gráficos:",
-            options=all_venc_filters,
-            key=f'venc_selector_{current_ticker}'
+        "Selecione o filtro de Vencimento para os gráficos:",
+        options=all_venc_filters,
+        key=f'venc_selector_{current_ticker}'
         )
 
         # --- Renderização dos Gráficos ---
