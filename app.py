@@ -935,7 +935,7 @@ st.code(copy_text, language='text')
 st.button("Copiar Métricas para a Área de Transferência", 
           on_click=lambda: st.success("Texto copiado! (Esta função depende do navegador, use o botão nativo do Streamlit ao lado do bloco de código se não funcionar.)"))
 
-st.markdown("---")
+        st.markdown("---")
         
         # --- Seletor de Vencimento para os Gráficos ---
         st.subheader("Visualização por Vencimento")
