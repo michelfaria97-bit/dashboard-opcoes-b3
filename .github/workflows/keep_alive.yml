@@ -1,0 +1,16 @@
+name: Manter Apps Streamlit Vivos
+
+on:
+  schedule:
+    # Executa a cada 6 horas
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar Requisição HTTP
+        run: |        
+          # Ping para o App de Opções B3
+          curl -H "User-Agent: Mozilla/5.0" -f -s -o /dev/null https://dashboard-opcoes-b3.streamlit.app/
